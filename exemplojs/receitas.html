@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Receitas</title>
+    <script type="text/javascript" src="receitas.json"></script>
+
+    <link rel="stylesheet" href="clear.css" />
+    <link rel="stylesheet" href="./css/formatos.css" />
+    <link rel="stylesheet" href="./css/receitas.css" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+   
+    
+
+        
+</head>
+
+<body onload="preencheCatalogo()">
+    <h1>Catálogo de Receitas</h1>
+    <main class="container-fluid bg-warning">
+        <div id="pnlCatalogo" style="display: flex; flex-wrap: wrap;"></div>
+          
+            
+    </main>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script>
+
+        getListaIngredientes = (receita) => {
+            var lista = '<ul>';
+            receita.ingredientes.map((item) => {
+                lista += '<li>' + item + '</li>'
+            });
+            lista += '</ul>'
+
+
+            return lista;
+        }
+
+
+        getCard = (receita) => {
+            var card = `<div class="card" style="width: 250px",  >`;
+            card += `<img class="card-img-top" src="${receita.imagem}"/>`;
+            card += `<div class="card-body">`;
+            card += `<h1 class="card-title">${receita.titulo}</h1>`;
+            card += `<div class="card-text">`;
+            card += getListaIngredientes(receita);
+            card += `<hr/>`;
+            card += `<p>${receita.preparo}</p>`;
+            card += `</div>`;
+            card += `</div>`;
+            card += `</div>`;
+
+            return card;
+        }
+
+        preencheCatalogo = () => {
+            var catalogo = ""
+            console.log('Carregou a página');
+
+            var listaReceitas = [];
+
+
+            fetch("receitas.json").then((data) => {
+
+                data.json().then(item => {
+
+
+                    item.map((item) => {
+                        catalogo += getCard(item);
+                    })
+
+                    const pnlCatalogo = document.getElementById('pnlCatalogo');
+                    pnlCatalogo.innerHTML = catalogo;
+
+                })
+ 
+            });
+        }
+    </script>
+</body>
+
+</html>
